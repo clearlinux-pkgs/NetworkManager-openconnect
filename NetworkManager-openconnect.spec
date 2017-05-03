@@ -4,7 +4,7 @@
 #
 Name     : NetworkManager-openconnect
 Version  : 1.2.4
-Release  : 1
+Release  : 2
 URL      : http://ftp.gnome.org/pub/gnome/sources/NetworkManager-openconnect/1.2/NetworkManager-openconnect-1.2.4.tar.xz
 Source0  : http://ftp.gnome.org/pub/gnome/sources/NetworkManager-openconnect/1.2/NetworkManager-openconnect-1.2.4.tar.xz
 Summary  : No detailed summary available
@@ -14,9 +14,16 @@ Requires: NetworkManager-openconnect-lib
 Requires: NetworkManager-openconnect-bin
 Requires: NetworkManager-openconnect-data
 Requires: NetworkManager-openconnect-locales
+BuildRequires : automake
+BuildRequires : automake-dev
 BuildRequires : gettext
+BuildRequires : gettext-bin
 BuildRequires : intltool
+BuildRequires : libtool
+BuildRequires : libtool-dev
+BuildRequires : m4
 BuildRequires : perl(XML::Parser)
+BuildRequires : pkg-config-dev
 BuildRequires : pkgconfig(NetworkManager)
 BuildRequires : pkgconfig(glib-2.0)
 BuildRequires : pkgconfig(gtk+-3.0)
@@ -24,6 +31,7 @@ BuildRequires : pkgconfig(libnm)
 BuildRequires : pkgconfig(libsecret-1)
 BuildRequires : pkgconfig(libxml-2.0)
 BuildRequires : pkgconfig(openconnect)
+Patch1: 0001-Use-stateless-vendor-d-bus-directory.patch
 
 %description
 The files in the "shared/" directory are used by all components
@@ -65,14 +73,15 @@ locales components for the NetworkManager-openconnect package.
 
 %prep
 %setup -q -n NetworkManager-openconnect-1.2.4
+%patch1 -p1
 
 %build
 export http_proxy=http://127.0.0.1:9/
 export https_proxy=http://127.0.0.1:9/
 export no_proxy=localhost,127.0.0.1,0.0.0.0
 export LANG=C
-export SOURCE_DATE_EPOCH=1493823849
-%configure --disable-static
+export SOURCE_DATE_EPOCH=1493824996
+%reconfigure --disable-static
 make V=1  %{?_smp_mflags}
 
 %check
@@ -83,7 +92,7 @@ export no_proxy=localhost,127.0.0.1,0.0.0.0
 make VERBOSE=1 V=1 %{?_smp_mflags} check
 
 %install
-export SOURCE_DATE_EPOCH=1493823849
+export SOURCE_DATE_EPOCH=1493824996
 rm -rf %{buildroot}
 %make_install
 %find_lang NetworkManager-openconnect
@@ -101,6 +110,7 @@ rm -rf %{buildroot}
 %files data
 %defattr(-,root,root,-)
 /usr/share/appdata/network-manager-openconnect.metainfo.xml
+/usr/share/dbus-1/system.d/nm-openconnect-service.conf
 /usr/share/gnome-vpn-properties/openconnect/nm-openconnect-dialog.ui
 
 %files lib
