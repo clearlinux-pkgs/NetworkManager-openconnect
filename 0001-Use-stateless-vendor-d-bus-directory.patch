@@ -1,0 +1,26 @@
+From 21001503fcb42f3991b2938b1c54d1a8778ddaec Mon Sep 17 00:00:00 2001
+From: Ikey Doherty <michael.i.doherty@intel.com>
+Date: Wed, 3 May 2017 16:07:32 +0100
+Subject: [PATCH] Use stateless (vendor) d-bus directory
+
+Signed-off-by: Ikey Doherty <michael.i.doherty@intel.com>
+---
+ Makefile.am | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/Makefile.am b/Makefile.am
+index f4c368c..2c34648 100644
+--- a/Makefile.am
++++ b/Makefile.am
+@@ -8,7 +8,7 @@ SUBDIRS += auth-dialog
+ endif
+ endif
+ 
+-dbusservicedir = $(sysconfdir)/dbus-1/system.d
++dbusservicedir = $(datadir)/dbus-1/system.d
+ dbusservice_DATA = nm-openconnect-service.conf
+ 
+ nmvpnservicedir = $(NM_VPN_SERVICE_DIR)
+-- 
+2.12.2
+
