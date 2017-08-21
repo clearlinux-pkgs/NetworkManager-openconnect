@@ -4,7 +4,7 @@
 #
 Name     : NetworkManager-openconnect
 Version  : 1.2.4
-Release  : 2
+Release  : 3
 URL      : http://ftp.gnome.org/pub/gnome/sources/NetworkManager-openconnect/1.2/NetworkManager-openconnect-1.2.4.tar.xz
 Source0  : http://ftp.gnome.org/pub/gnome/sources/NetworkManager-openconnect/1.2/NetworkManager-openconnect-1.2.4.tar.xz
 Summary  : No detailed summary available
@@ -28,6 +28,9 @@ BuildRequires : pkgconfig(NetworkManager)
 BuildRequires : pkgconfig(glib-2.0)
 BuildRequires : pkgconfig(gtk+-3.0)
 BuildRequires : pkgconfig(libnm)
+BuildRequires : pkgconfig(libnm-glib)
+BuildRequires : pkgconfig(libnm-glib-vpn)
+BuildRequires : pkgconfig(libnm-util)
 BuildRequires : pkgconfig(libsecret-1)
 BuildRequires : pkgconfig(libxml-2.0)
 BuildRequires : pkgconfig(openconnect)
@@ -80,7 +83,7 @@ export http_proxy=http://127.0.0.1:9/
 export https_proxy=http://127.0.0.1:9/
 export no_proxy=localhost,127.0.0.1,0.0.0.0
 export LANG=C
-export SOURCE_DATE_EPOCH=1493824996
+export SOURCE_DATE_EPOCH=1503334609
 %reconfigure --disable-static
 make V=1  %{?_smp_mflags}
 
@@ -92,7 +95,7 @@ export no_proxy=localhost,127.0.0.1,0.0.0.0
 make VERBOSE=1 V=1 %{?_smp_mflags} check
 
 %install
-export SOURCE_DATE_EPOCH=1493824996
+export SOURCE_DATE_EPOCH=1503334609
 rm -rf %{buildroot}
 %make_install
 %find_lang NetworkManager-openconnect
