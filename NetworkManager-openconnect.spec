@@ -4,7 +4,7 @@
 #
 Name     : NetworkManager-openconnect
 Version  : 1.2.4
-Release  : 4
+Release  : 5
 URL      : https://download.gnome.org/sources/NetworkManager-openconnect/1.2/NetworkManager-openconnect-1.2.4.tar.xz
 Source0  : https://download.gnome.org/sources/NetworkManager-openconnect/1.2/NetworkManager-openconnect-1.2.4.tar.xz
 Summary  : No detailed summary available
