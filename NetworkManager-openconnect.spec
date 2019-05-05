@@ -4,18 +4,20 @@
 #
 Name     : NetworkManager-openconnect
 Version  : 1.2.4
-Release  : 6
+Release  : 7
 URL      : https://download.gnome.org/sources/NetworkManager-openconnect/1.2/NetworkManager-openconnect-1.2.4.tar.xz
 Source0  : https://download.gnome.org/sources/NetworkManager-openconnect/1.2/NetworkManager-openconnect-1.2.4.tar.xz
-Summary  : No detailed summary available
+Summary  : NetworkManager VPN plugin for OpenConnect
 Group    : Development/Tools
 License  : GPL-2.0
-Requires: NetworkManager-openconnect-lib
-Requires: NetworkManager-openconnect-bin
-Requires: NetworkManager-openconnect-data
-Requires: NetworkManager-openconnect-locales
+Requires: NetworkManager-openconnect-data = %{version}-%{release}
+Requires: NetworkManager-openconnect-lib = %{version}-%{release}
+Requires: NetworkManager-openconnect-libexec = %{version}-%{release}
+Requires: NetworkManager-openconnect-license = %{version}-%{release}
+Requires: NetworkManager-openconnect-locales = %{version}-%{release}
 BuildRequires : automake
 BuildRequires : automake-dev
+BuildRequires : buildreq-gnome
 BuildRequires : gettext
 BuildRequires : gettext-bin
 BuildRequires : intltool
@@ -40,15 +42,6 @@ Patch1: 0001-Use-stateless-vendor-d-bus-directory.patch
 The files in the "shared/" directory are used by all components
 inside the VPN plugin repository (src, properties, auth-dialog).
 
-%package bin
-Summary: bin components for the NetworkManager-openconnect package.
-Group: Binaries
-Requires: NetworkManager-openconnect-data
-
-%description bin
-bin components for the NetworkManager-openconnect package.
-
-
 %package data
 Summary: data components for the NetworkManager-openconnect package.
 Group: Data
@@ -60,10 +53,29 @@ data components for the NetworkManager-openconnect package.
 %package lib
 Summary: lib components for the NetworkManager-openconnect package.
 Group: Libraries
-Requires: NetworkManager-openconnect-data
+Requires: NetworkManager-openconnect-data = %{version}-%{release}
+Requires: NetworkManager-openconnect-libexec = %{version}-%{release}
+Requires: NetworkManager-openconnect-license = %{version}-%{release}
 
 %description lib
 lib components for the NetworkManager-openconnect package.
+
+
+%package libexec
+Summary: libexec components for the NetworkManager-openconnect package.
+Group: Default
+Requires: NetworkManager-openconnect-license = %{version}-%{release}
+
+%description libexec
+libexec components for the NetworkManager-openconnect package.
+
+
+%package license
+Summary: license components for the NetworkManager-openconnect package.
+Group: Default
+
+%description license
+license components for the NetworkManager-openconnect package.
 
 
 %package locales
@@ -83,9 +95,16 @@ export http_proxy=http://127.0.0.1:9/
 export https_proxy=http://127.0.0.1:9/
 export no_proxy=localhost,127.0.0.1,0.0.0.0
 export LANG=C
-export SOURCE_DATE_EPOCH=1508273648
+export SOURCE_DATE_EPOCH=1557021141
+export AR=gcc-ar
+export RANLIB=gcc-ranlib
+export NM=gcc-nm
+export CFLAGS="$CFLAGS -O3 -ffat-lto-objects -flto=4 "
+export FCFLAGS="$CFLAGS -O3 -ffat-lto-objects -flto=4 "
+export FFLAGS="$CFLAGS -O3 -ffat-lto-objects -flto=4 "
+export CXXFLAGS="$CXXFLAGS -O3 -ffat-lto-objects -flto=4 "
 %reconfigure --disable-static
-make V=1  %{?_smp_mflags}
+make  %{?_smp_mflags}
 
 %check
 export LANG=C
@@ -95,20 +114,16 @@ export no_proxy=localhost,127.0.0.1,0.0.0.0
 make VERBOSE=1 V=1 %{?_smp_mflags} check
 
 %install
-export SOURCE_DATE_EPOCH=1508273648
+export SOURCE_DATE_EPOCH=1557021141
 rm -rf %{buildroot}
+mkdir -p %{buildroot}/usr/share/package-licenses/NetworkManager-openconnect
+cp COPYING %{buildroot}/usr/share/package-licenses/NetworkManager-openconnect/COPYING
 %make_install
 %find_lang NetworkManager-openconnect
 
 %files
 %defattr(-,root,root,-)
 /usr/lib/NetworkManager/VPN/nm-openconnect-service.name
-
-%files bin
-%defattr(-,root,root,-)
-/usr/libexec/nm-openconnect-auth-dialog
-/usr/libexec/nm-openconnect-service
-/usr/libexec/nm-openconnect-service-openconnect-helper
 
 %files data
 %defattr(-,root,root,-)
@@ -121,6 +136,16 @@ rm -rf %{buildroot}
 /usr/lib64/NetworkManager/libnm-openconnect-properties.so
 /usr/lib64/NetworkManager/libnm-vpn-plugin-openconnect-editor.so
 /usr/lib64/NetworkManager/libnm-vpn-plugin-openconnect.so
+
+%files libexec
+%defattr(-,root,root,-)
+/usr/libexec/nm-openconnect-auth-dialog
+/usr/libexec/nm-openconnect-service
+/usr/libexec/nm-openconnect-service-openconnect-helper
+
+%files license
+%defattr(0644,root,root,0755)
+/usr/share/package-licenses/NetworkManager-openconnect/COPYING
 
 %files locales -f NetworkManager-openconnect.lang
 %defattr(-,root,root,-)

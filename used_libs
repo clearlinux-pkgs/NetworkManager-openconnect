@@ -9,6 +9,5 @@ libnm-glib-vpn.so.1
 libnm-util.so.2
 libnm.so.0
 libopenconnect.so.5
-libpthread.so.0
 libsecret-1.so.0
 libxml2.so.2
