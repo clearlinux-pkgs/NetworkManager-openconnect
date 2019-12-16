@@ -4,7 +4,7 @@
 #
 Name     : NetworkManager-openconnect
 Version  : 1.2.6
-Release  : 10
+Release  : 11
 URL      : https://download.gnome.org/sources/NetworkManager-openconnect/1.2/NetworkManager-openconnect-1.2.6.tar.xz
 Source0  : https://download.gnome.org/sources/NetworkManager-openconnect/1.2/NetworkManager-openconnect-1.2.6.tar.xz
 Summary  : NetworkManager VPN plugin for OpenConnect
@@ -31,9 +31,6 @@ BuildRequires : pkgconfig(gcr-3)
 BuildRequires : pkgconfig(glib-2.0)
 BuildRequires : pkgconfig(gtk+-3.0)
 BuildRequires : pkgconfig(libnm)
-BuildRequires : pkgconfig(libnm-glib)
-BuildRequires : pkgconfig(libnm-glib-vpn)
-BuildRequires : pkgconfig(libnm-util)
 BuildRequires : pkgconfig(libsecret-1)
 BuildRequires : pkgconfig(libxml-2.0)
 BuildRequires : pkgconfig(openconnect)
@@ -90,6 +87,7 @@ locales components for the NetworkManager-openconnect package.
 
 %prep
 %setup -q -n NetworkManager-openconnect-1.2.6
+cd %{_builddir}/NetworkManager-openconnect-1.2.6
 %patch1 -p1
 
 %build
@@ -97,8 +95,7 @@ export http_proxy=http://127.0.0.1:9/
 export https_proxy=http://127.0.0.1:9/
 export no_proxy=localhost,127.0.0.1,0.0.0.0
 export LANG=C.UTF-8
-export SOURCE_DATE_EPOCH=1568045358
-# -Werror is for werrorists
+export SOURCE_DATE_EPOCH=1576104953
 export GCC_IGNORE_WERROR=1
 export AR=gcc-ar
 export RANLIB=gcc-ranlib
@@ -118,10 +115,10 @@ export no_proxy=localhost,127.0.0.1,0.0.0.0
 make VERBOSE=1 V=1 %{?_smp_mflags} check
 
 %install
-export SOURCE_DATE_EPOCH=1568045358
+export SOURCE_DATE_EPOCH=1576104953
 rm -rf %{buildroot}
 mkdir -p %{buildroot}/usr/share/package-licenses/NetworkManager-openconnect
-cp COPYING %{buildroot}/usr/share/package-licenses/NetworkManager-openconnect/COPYING
+cp %{_builddir}/NetworkManager-openconnect-1.2.6/COPYING %{buildroot}/usr/share/package-licenses/NetworkManager-openconnect/253c30cd74e4812f13e9e561cb54cbab26bc19dc
 %make_install
 %find_lang NetworkManager-openconnect
 
@@ -148,7 +145,7 @@ cp COPYING %{buildroot}/usr/share/package-licenses/NetworkManager-openconnect/CO
 
 %files license
 %defattr(0644,root,root,0755)
-/usr/share/package-licenses/NetworkManager-openconnect/COPYING
+/usr/share/package-licenses/NetworkManager-openconnect/253c30cd74e4812f13e9e561cb54cbab26bc19dc
 
 %files locales -f NetworkManager-openconnect.lang
 %defattr(-,root,root,-)
