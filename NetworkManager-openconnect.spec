@@ -4,10 +4,10 @@
 #
 Name     : NetworkManager-openconnect
 Version  : 1.2.6
-Release  : 11
+Release  : 12
 URL      : https://download.gnome.org/sources/NetworkManager-openconnect/1.2/NetworkManager-openconnect-1.2.6.tar.xz
 Source0  : https://download.gnome.org/sources/NetworkManager-openconnect/1.2/NetworkManager-openconnect-1.2.6.tar.xz
-Summary  : NetworkManager VPN plugin for OpenConnect
+Summary  : No detailed summary available
 Group    : Development/Tools
 License  : GPL-2.0
 Requires: NetworkManager-openconnect-data = %{version}-%{release}
@@ -95,14 +95,14 @@ export http_proxy=http://127.0.0.1:9/
 export https_proxy=http://127.0.0.1:9/
 export no_proxy=localhost,127.0.0.1,0.0.0.0
 export LANG=C.UTF-8
-export SOURCE_DATE_EPOCH=1576104953
+export SOURCE_DATE_EPOCH=1586242809
 export GCC_IGNORE_WERROR=1
 export AR=gcc-ar
 export RANLIB=gcc-ranlib
 export NM=gcc-nm
 export CFLAGS="$CFLAGS -O3 -ffat-lto-objects -flto=4 "
-export FCFLAGS="$CFLAGS -O3 -ffat-lto-objects -flto=4 "
-export FFLAGS="$CFLAGS -O3 -ffat-lto-objects -flto=4 "
+export FCFLAGS="$FFLAGS -O3 -ffat-lto-objects -flto=4 "
+export FFLAGS="$FFLAGS -O3 -ffat-lto-objects -flto=4 "
 export CXXFLAGS="$CXXFLAGS -O3 -ffat-lto-objects -flto=4 "
 %reconfigure --disable-static
 make  %{?_smp_mflags}
@@ -115,7 +115,7 @@ export no_proxy=localhost,127.0.0.1,0.0.0.0
 make VERBOSE=1 V=1 %{?_smp_mflags} check
 
 %install
-export SOURCE_DATE_EPOCH=1576104953
+export SOURCE_DATE_EPOCH=1586242809
 rm -rf %{buildroot}
 mkdir -p %{buildroot}/usr/share/package-licenses/NetworkManager-openconnect
 cp %{_builddir}/NetworkManager-openconnect-1.2.6/COPYING %{buildroot}/usr/share/package-licenses/NetworkManager-openconnect/253c30cd74e4812f13e9e561cb54cbab26bc19dc
