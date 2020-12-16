@@ -4,7 +4,7 @@
 #
 Name     : NetworkManager-openconnect
 Version  : 1.2.6
-Release  : 13
+Release  : 14
 URL      : https://download.gnome.org/sources/NetworkManager-openconnect/1.2/NetworkManager-openconnect-1.2.6.tar.xz
 Source0  : https://download.gnome.org/sources/NetworkManager-openconnect/1.2/NetworkManager-openconnect-1.2.6.tar.xz
 Summary  : No detailed summary available
@@ -21,6 +21,7 @@ BuildRequires : buildreq-gnome
 BuildRequires : gettext
 BuildRequires : gettext-bin
 BuildRequires : intltool
+BuildRequires : intltool-dev
 BuildRequires : libtool
 BuildRequires : libtool-dev
 BuildRequires : m4
@@ -95,7 +96,7 @@ export http_proxy=http://127.0.0.1:9/
 export https_proxy=http://127.0.0.1:9/
 export no_proxy=localhost,127.0.0.1,0.0.0.0
 export LANG=C.UTF-8
-export SOURCE_DATE_EPOCH=1586242809
+export SOURCE_DATE_EPOCH=1608146077
 export GCC_IGNORE_WERROR=1
 export AR=gcc-ar
 export RANLIB=gcc-ranlib
@@ -112,10 +113,10 @@ export LANG=C.UTF-8
 export http_proxy=http://127.0.0.1:9/
 export https_proxy=http://127.0.0.1:9/
 export no_proxy=localhost,127.0.0.1,0.0.0.0
-make VERBOSE=1 V=1 %{?_smp_mflags} check
+make %{?_smp_mflags} check
 
 %install
-export SOURCE_DATE_EPOCH=1586242809
+export SOURCE_DATE_EPOCH=1608146077
 rm -rf %{buildroot}
 mkdir -p %{buildroot}/usr/share/package-licenses/NetworkManager-openconnect
 cp %{_builddir}/NetworkManager-openconnect-1.2.6/COPYING %{buildroot}/usr/share/package-licenses/NetworkManager-openconnect/253c30cd74e4812f13e9e561cb54cbab26bc19dc
