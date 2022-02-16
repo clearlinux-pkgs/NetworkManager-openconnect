@@ -4,7 +4,7 @@
 #
 Name     : NetworkManager-openconnect
 Version  : 1.2.6
-Release  : 14
+Release  : 15
 URL      : https://download.gnome.org/sources/NetworkManager-openconnect/1.2/NetworkManager-openconnect-1.2.6.tar.xz
 Source0  : https://download.gnome.org/sources/NetworkManager-openconnect/1.2/NetworkManager-openconnect-1.2.6.tar.xz
 Summary  : No detailed summary available
@@ -27,7 +27,6 @@ BuildRequires : libtool-dev
 BuildRequires : m4
 BuildRequires : perl(XML::Parser)
 BuildRequires : pkg-config-dev
-BuildRequires : pkgconfig(NetworkManager)
 BuildRequires : pkgconfig(gcr-3)
 BuildRequires : pkgconfig(glib-2.0)
 BuildRequires : pkgconfig(gtk+-3.0)
@@ -96,15 +95,15 @@ export http_proxy=http://127.0.0.1:9/
 export https_proxy=http://127.0.0.1:9/
 export no_proxy=localhost,127.0.0.1,0.0.0.0
 export LANG=C.UTF-8
-export SOURCE_DATE_EPOCH=1608146077
+export SOURCE_DATE_EPOCH=1645045236
 export GCC_IGNORE_WERROR=1
 export AR=gcc-ar
 export RANLIB=gcc-ranlib
 export NM=gcc-nm
-export CFLAGS="$CFLAGS -O3 -ffat-lto-objects -flto=4 "
-export FCFLAGS="$FFLAGS -O3 -ffat-lto-objects -flto=4 "
-export FFLAGS="$FFLAGS -O3 -ffat-lto-objects -flto=4 "
-export CXXFLAGS="$CXXFLAGS -O3 -ffat-lto-objects -flto=4 "
+export CFLAGS="$CFLAGS -O3 -ffat-lto-objects -flto=auto "
+export FCFLAGS="$FFLAGS -O3 -ffat-lto-objects -flto=auto "
+export FFLAGS="$FFLAGS -O3 -ffat-lto-objects -flto=auto "
+export CXXFLAGS="$CXXFLAGS -O3 -ffat-lto-objects -flto=auto "
 %reconfigure --disable-static
 make  %{?_smp_mflags}
 
@@ -116,7 +115,7 @@ export no_proxy=localhost,127.0.0.1,0.0.0.0
 make %{?_smp_mflags} check
 
 %install
-export SOURCE_DATE_EPOCH=1608146077
+export SOURCE_DATE_EPOCH=1645045236
 rm -rf %{buildroot}
 mkdir -p %{buildroot}/usr/share/package-licenses/NetworkManager-openconnect
 cp %{_builddir}/NetworkManager-openconnect-1.2.6/COPYING %{buildroot}/usr/share/package-licenses/NetworkManager-openconnect/253c30cd74e4812f13e9e561cb54cbab26bc19dc
