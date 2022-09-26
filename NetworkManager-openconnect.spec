@@ -4,7 +4,7 @@
 #
 Name     : NetworkManager-openconnect
 Version  : 1.2.8
-Release  : 18
+Release  : 19
 URL      : https://download.gnome.org/sources/NetworkManager-openconnect/1.2/NetworkManager-openconnect-1.2.8.tar.xz
 Source0  : https://download.gnome.org/sources/NetworkManager-openconnect/1.2/NetworkManager-openconnect-1.2.8.tar.xz
 Summary  : No detailed summary available
@@ -98,7 +98,7 @@ export http_proxy=http://127.0.0.1:9/
 export https_proxy=http://127.0.0.1:9/
 export no_proxy=localhost,127.0.0.1,0.0.0.0
 export LANG=C.UTF-8
-export SOURCE_DATE_EPOCH=1647884350
+export SOURCE_DATE_EPOCH=1664161215
 export GCC_IGNORE_WERROR=1
 export AR=gcc-ar
 export RANLIB=gcc-ranlib
@@ -118,10 +118,10 @@ export no_proxy=localhost,127.0.0.1,0.0.0.0
 make %{?_smp_mflags} check
 
 %install
-export SOURCE_DATE_EPOCH=1647884350
+export SOURCE_DATE_EPOCH=1664161215
 rm -rf %{buildroot}
 mkdir -p %{buildroot}/usr/share/package-licenses/NetworkManager-openconnect
-cp %{_builddir}/NetworkManager-openconnect-1.2.8/COPYING %{buildroot}/usr/share/package-licenses/NetworkManager-openconnect/253c30cd74e4812f13e9e561cb54cbab26bc19dc
+cp %{_builddir}/NetworkManager-openconnect-%{version}/COPYING %{buildroot}/usr/share/package-licenses/NetworkManager-openconnect/253c30cd74e4812f13e9e561cb54cbab26bc19dc || :
 %make_install
 %find_lang NetworkManager-openconnect
 
