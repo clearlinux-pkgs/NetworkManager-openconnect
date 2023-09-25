@@ -1,5 +1,10 @@
 Configure miss: whether -Wparentheses-equality works as expected
+Configure miss: whether -Wparentheses-equality works as expected
+Configure miss: whether -Wtypedef-redefinition works as expected
 Configure miss: whether -Wtypedef-redefinition works as expected
 Configure miss: whether -Wunknown-attributes works as expected
+Configure miss: whether -Wunknown-attributes works as expected
 Configure miss: whether -Wunknown-warning-option works as expected
+Configure miss: whether -Wunknown-warning-option works as expected
+Configure miss: x86_64-generic-linux-gnu-file
 Configure miss: x86_64-generic-linux-gnu-file

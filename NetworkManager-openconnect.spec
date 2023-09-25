@@ -4,10 +4,10 @@
 # Using build pattern: configure
 #
 Name     : NetworkManager-openconnect
-Version  : 1.2.8
-Release  : 21
-URL      : https://download.gnome.org/sources/NetworkManager-openconnect/1.2/NetworkManager-openconnect-1.2.8.tar.xz
-Source0  : https://download.gnome.org/sources/NetworkManager-openconnect/1.2/NetworkManager-openconnect-1.2.8.tar.xz
+Version  : 1.2.10
+Release  : 22
+URL      : https://download.gnome.org/sources/NetworkManager-openconnect/1.2/NetworkManager-openconnect-1.2.10.tar.xz
+Source0  : https://download.gnome.org/sources/NetworkManager-openconnect/1.2/NetworkManager-openconnect-1.2.10.tar.xz
 Summary  : No detailed summary available
 Group    : Development/Tools
 License  : GPL-2.0
@@ -24,6 +24,7 @@ BuildRequires : intltool-dev
 BuildRequires : perl(XML::Parser)
 BuildRequires : pkgconfig(gcr-3)
 BuildRequires : pkgconfig(glib-2.0)
+BuildRequires : pkgconfig(gmodule-2.0)
 BuildRequires : pkgconfig(gtk+-3.0)
 BuildRequires : pkgconfig(gtk4)
 BuildRequires : pkgconfig(libnm)
@@ -32,10 +33,10 @@ BuildRequires : pkgconfig(libnma-gtk4)
 BuildRequires : pkgconfig(libsecret-1)
 BuildRequires : pkgconfig(libxml-2.0)
 BuildRequires : pkgconfig(openconnect)
+BuildRequires : pkgconfig(webkit2gtk-4.1)
 # Suppress stripping binaries
 %define __strip /bin/true
 %define debug_package %{nil}
-Patch1: 0001-Use-stateless-vendor-d-bus-directory.patch
 
 %description
 OpenConnect VPN client
@@ -87,41 +88,59 @@ locales components for the NetworkManager-openconnect package.
 
 
 %prep
-%setup -q -n NetworkManager-openconnect-1.2.8
-cd %{_builddir}/NetworkManager-openconnect-1.2.8
-%patch1 -p1
+%setup -q -n NetworkManager-openconnect-1.2.10
+cd %{_builddir}/NetworkManager-openconnect-1.2.10
+pushd ..
+cp -a NetworkManager-openconnect-1.2.10 buildavx2
+popd
 
 %build
 export http_proxy=http://127.0.0.1:9/
 export https_proxy=http://127.0.0.1:9/
 export no_proxy=localhost,127.0.0.1,0.0.0.0
 export LANG=C.UTF-8
-export SOURCE_DATE_EPOCH=1680040665
+export SOURCE_DATE_EPOCH=1695670840
 export GCC_IGNORE_WERROR=1
 export AR=gcc-ar
 export RANLIB=gcc-ranlib
 export NM=gcc-nm
-export CFLAGS="$CFLAGS -O3 -fdebug-types-section -femit-struct-debug-baseonly -ffat-lto-objects -flto=auto -g1 -gno-column-info -gno-variable-location-views -gz "
-export FCFLAGS="$FFLAGS -O3 -fdebug-types-section -femit-struct-debug-baseonly -ffat-lto-objects -flto=auto -g1 -gno-column-info -gno-variable-location-views -gz "
-export FFLAGS="$FFLAGS -O3 -fdebug-types-section -femit-struct-debug-baseonly -ffat-lto-objects -flto=auto -g1 -gno-column-info -gno-variable-location-views -gz "
-export CXXFLAGS="$CXXFLAGS -O3 -fdebug-types-section -femit-struct-debug-baseonly -ffat-lto-objects -flto=auto -g1 -gno-column-info -gno-variable-location-views -gz "
-%reconfigure --disable-static
+export CFLAGS="$CFLAGS -O3 -fdebug-types-section -femit-struct-debug-baseonly -ffat-lto-objects -flto=auto -g1 -gno-column-info -gno-variable-location-views -gz=zstd "
+export FCFLAGS="$FFLAGS -O3 -fdebug-types-section -femit-struct-debug-baseonly -ffat-lto-objects -flto=auto -g1 -gno-column-info -gno-variable-location-views -gz=zstd "
+export FFLAGS="$FFLAGS -O3 -fdebug-types-section -femit-struct-debug-baseonly -ffat-lto-objects -flto=auto -g1 -gno-column-info -gno-variable-location-views -gz=zstd "
+export CXXFLAGS="$CXXFLAGS -O3 -fdebug-types-section -femit-struct-debug-baseonly -ffat-lto-objects -flto=auto -g1 -gno-column-info -gno-variable-location-views -gz=zstd "
+%configure --disable-static
 make  %{?_smp_mflags}
 
+unset PKG_CONFIG_PATH
+pushd ../buildavx2/
+export CFLAGS="$CFLAGS -m64 -march=x86-64-v3 -Wl,-z,x86-64-v3"
+export CXXFLAGS="$CXXFLAGS -m64 -march=x86-64-v3 -Wl,-z,x86-64-v3"
+export FFLAGS="$FFLAGS -m64 -march=x86-64-v3 -Wl,-z,x86-64-v3"
+export FCFLAGS="$FCFLAGS -m64 -march=x86-64-v3"
+export LDFLAGS="$LDFLAGS -m64 -march=x86-64-v3"
+%configure --disable-static
+make  %{?_smp_mflags}
+popd
 %check
 export LANG=C.UTF-8
 export http_proxy=http://127.0.0.1:9/
 export https_proxy=http://127.0.0.1:9/
 export no_proxy=localhost,127.0.0.1,0.0.0.0
 make %{?_smp_mflags} check
+cd ../buildavx2;
+make %{?_smp_mflags} check || :
 
 %install
-export SOURCE_DATE_EPOCH=1680040665
+export SOURCE_DATE_EPOCH=1695670840
 rm -rf %{buildroot}
 mkdir -p %{buildroot}/usr/share/package-licenses/NetworkManager-openconnect
 cp %{_builddir}/NetworkManager-openconnect-%{version}/COPYING %{buildroot}/usr/share/package-licenses/NetworkManager-openconnect/253c30cd74e4812f13e9e561cb54cbab26bc19dc || :
+pushd ../buildavx2/
+%make_install_v3
+popd
 %make_install
 %find_lang NetworkManager-openconnect
+/usr/bin/elf-move.py avx2 %{buildroot}-v3 %{buildroot} %{buildroot}/usr/share/clear/filemap/filemap-%{name}
 
 %files
 %defattr(-,root,root,-)
@@ -129,16 +148,21 @@ cp %{_builddir}/NetworkManager-openconnect-%{version}/COPYING %{buildroot}/usr/s
 
 %files data
 %defattr(-,root,root,-)
-/usr/share/appdata/network-manager-openconnect.metainfo.xml
 /usr/share/dbus-1/system.d/nm-openconnect-service.conf
+/usr/share/metainfo/network-manager-openconnect.metainfo.xml
 
 %files lib
 %defattr(-,root,root,-)
+/V3/usr/lib64/NetworkManager/libnm-vpn-plugin-openconnect-editor.so
+/V3/usr/lib64/NetworkManager/libnm-vpn-plugin-openconnect.so
 /usr/lib64/NetworkManager/libnm-vpn-plugin-openconnect-editor.so
 /usr/lib64/NetworkManager/libnm-vpn-plugin-openconnect.so
 
 %files libexec
 %defattr(-,root,root,-)
+/V3/usr/libexec/nm-openconnect-auth-dialog
+/V3/usr/libexec/nm-openconnect-service
+/V3/usr/libexec/nm-openconnect-service-openconnect-helper
 /usr/libexec/nm-openconnect-auth-dialog
 /usr/libexec/nm-openconnect-service
 /usr/libexec/nm-openconnect-service-openconnect-helper
